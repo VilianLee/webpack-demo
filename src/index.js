@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import $ from 'jquery'
+import holle from './vilian'
 
 function component() {
   let element = $("<div></div>");
@@ -11,3 +12,5 @@ function component() {
 }
 
 document.body.appendChild(component());
+console.log(holle);
+console.log(holle());
