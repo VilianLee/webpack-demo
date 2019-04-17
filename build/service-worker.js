@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/VilianLee/webpack-demo/precache-manifest.b416c5bd0aae358524b964d587ccd4ad.js"
+  "/webpack-demo/build/precache-manifest.240b4465cd10630112a8e09aa568ef68.js"
 );
 
 workbox.clientsClaim();
@@ -28,7 +28,7 @@ self.__precacheManifest = [].concat(self.__precacheManifest || []);
 workbox.precaching.suppressWarnings();
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
-workbox.routing.registerNavigationRoute("/VilianLee/webpack-demo/index.html", {
+workbox.routing.registerNavigationRoute("/webpack-demo/build/index.html", {
   
   blacklist: [/^\/_/,/\/[^\/]+\.[^\/]+$/],
 });
