@@ -16,7 +16,7 @@ self.__precacheManifest = [
     "url": "/webpack-demo/build/static/css/main.032ab850.chunk.css"
   },
   {
-    "revision": "c0a3ff0fa824967648d4e1723221c45a",
+    "revision": "a447d1bf134d869503c5e66b5d7448b7",
     "url": "/webpack-demo/build/index.html"
   }
 ];
