@@ -2,15 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
+import App from './App'
 
-class Welcome extends React.Component {
-  render() {
-    return <h1>Hello, Component</h1>;
-  }
-}
 
 ReactDOM.render(
-  <Welcome/>,
+  <App/>,
   document.getElementById('root')
 )
 
