@@ -10,6 +10,8 @@ import {
   Modal
 } from 'antd-mobile';
 
+import TodoInput from './component/TodoInput/TodoInput'
+
 
 function closest(el, selector) {
   const matchesSelector = el.matches || el.webkitMatchesSelector || el.mozMatchesSelector || el.msMatchesSelector;
@@ -162,11 +164,8 @@ class App extends Component {
           wrapProps={{ onTouchStart: this.onWrapTouchStart }}
         >
           <div style={{ height: 100, overflow: 'scroll' }}>
-            <input type="text" className="diolog_input" placeholder="请输入待办标题"
-                   value={this.state.newTitle}
-                   onChange={this.newTitleChange}
-            />
-            <textarea className="diolog_input" placeholder="请输入待办内容" value={this.state.newContent} onChange={this.newContentChange}/>
+            <TodoInput placeholder="请输入待办标题" value={this.state.newTitle}/>
+            <TodoInput placeholder="请输入待办内容" value={this.state.newContent}/>
           </div>
         </Modal>
       </div>
