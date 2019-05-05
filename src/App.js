@@ -2,15 +2,14 @@ import React, {Component} from 'react';
 import 'antd-mobile/dist/antd-mobile.css';
 import './App.css';
 import {
-  Card,
-  WingBlank,
-  WhiteSpace,
   NavBar,
   Icon,
   Modal
 } from 'antd-mobile';
 
-import TodoInput from './component/TodoInput/TodoInput'
+import TodoInput from './component/TodoItem/TodoInput/TodoInput'
+import TodoItem from './component/TodoItem/TodoItem'
+
 
 
 function closest(el, selector) {
@@ -29,7 +28,7 @@ class App extends Component {
     super(props);
     this.state = {
       newTitle: "",
-      newContent:"",
+      newContent: "",
       newId: 0,
       isEdit: false,
       todoList: [
@@ -38,7 +37,9 @@ class App extends Component {
           title: "第一个待办",
           content: "晚上去打篮球",
           date: "2019-04-18 16:04",
-          position: "杭州，西子国际"
+          position: "杭州，西子国际",
+          deleted: false,
+          finished: false
         }
       ]
     };
@@ -50,7 +51,7 @@ class App extends Component {
     this.setState({newTitle: event.target.value});
   }
   newContentChange(event) {
-    this.setState({newTitle: event.target.newContent});
+    this.setState({newContent: event.target.value});
   }
 
 
@@ -58,6 +59,10 @@ class App extends Component {
     //let listNum = this.state.todoList.length;
     //let newId = this.state.todoList[listNum].id + 1;
     //this.setState(newId)
+    //let local_todoList =
+    this.state.todoList.map((item,index) => {
+      return this.setState({newId:item.id + 1});
+    })
   }
   showModal = key => (e) => {
     e.preventDefault(); // 修复 Android 上点击穿透
@@ -83,16 +88,21 @@ class App extends Component {
   editNewTodo = (title,content) => {
     let nowTime = new Date();
     let item = {
-      id: 2,
+      id: this.state.newId,
       title: title,
       content: content,
       date: this.dateFormat(nowTime),
-      position: "杭州"
+      position: "杭州",
+      deleted: false,
+      finished: false
     };
     this.state.todoList.push(item);
-    console.log(item,this.state.todoList);
     this.setState({
-      todoList : this.state.todoList
+      todoList : this.state.todoList,
+      newTitle : "",
+      newContent: "",
+      deleted: false,
+      newId: this.state.newId+1
     })
   };
 
@@ -106,23 +116,19 @@ class App extends Component {
     return `${year}-${month}-${day} ${hour}:${minute}:${second}`
   };
 
+  updateCardStatus = (e,todo) => {
+    todo.finished = e;
+    this.setState(this.state)
+  };
+
+  deleteCard(event, todo){
+    todo.deleted = true;
+    this.setState(this.state)
+  }
   render() {
-    let todos = this.state.todoList.map((item, index) => {
+    let todos = this.state.todoList.filter((item)=> !item.deleted).map((item, index) => {
       return (
-        <WingBlank size="lg" key={item.id}>
-          <WhiteSpace size="lg"/>
-          <Card>
-            <Card.Header
-              title={item.title}
-            />
-            <Card.Body>
-              <div>{item.content}</div>
-            </Card.Body>
-            <Card.Footer content={item.date} extra={
-              <div>{item.position}</div>}/>
-          </Card>
-          <WhiteSpace size="lg"/>
-        </WingBlank>
+        <TodoItem item={item} key={item.id} updateStatus={this.updateCardStatus.bind(this)} onDelete={this.deleteCard.bind(this)}/>
       )
     });
     return (
@@ -142,6 +148,8 @@ class App extends Component {
         <div className="newTodo" onClick={this.showModal('isEdit')}>
           <Icon type="plus"/>
         </div>
+
+
         <Modal
           visible={this.state.isEdit}
           transparent
@@ -157,6 +165,7 @@ class App extends Component {
             }, {
               text: '确认',
               onPress: () => {
+                console.log(this.state.newTitle,this.state.newContent);
                 this.editNewTodo(this.state.newTitle,this.state.newContent);
                 this.onClose('isEdit')();
               }
@@ -164,8 +173,8 @@ class App extends Component {
           wrapProps={{ onTouchStart: this.onWrapTouchStart }}
         >
           <div style={{ height: 100, overflow: 'scroll' }}>
-            <TodoInput placeholder="请输入待办标题" value={this.state.newTitle}/>
-            <TodoInput placeholder="请输入待办内容" value={this.state.newContent}/>
+            <TodoInput placeholder="请输入待办标题" value={this.state.newTitle} update={this.newTitleChange}/>
+            <TodoInput placeholder="请输入待办内容" value={this.state.newContent} update={this.newContentChange}/>
           </div>
         </Modal>
       </div>
