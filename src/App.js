@@ -10,7 +10,7 @@ import {
 import TodoInput from './component/TodoItem/TodoInput/TodoInput'
 import TodoItem from './component/TodoItem/TodoItem'
 
-
+import * as localStore from './localStore'
 
 function closest(el, selector) {
   const matchesSelector = el.matches || el.webkitMatchesSelector || el.mozMatchesSelector || el.msMatchesSelector;
@@ -31,7 +31,7 @@ class App extends Component {
       newContent: "",
       newId: 0,
       isEdit: false,
-      todoList: [
+      todoList: localStore.load('todoList') || [
         {
           id: 1,
           title: "第一个待办",
@@ -103,7 +103,8 @@ class App extends Component {
       newContent: "",
       deleted: false,
       newId: this.state.newId+1
-    })
+    });
+    localStore.save('todoList', this.state.todoList)
   };
 
   dateFormat = (date) => {
@@ -118,12 +119,14 @@ class App extends Component {
 
   updateCardStatus = (e,todo) => {
     todo.finished = e;
-    this.setState(this.state)
+    this.setState(this.state);
+    localStore.save('todoList', this.state.todoList)
   };
 
   deleteCard(event, todo){
     todo.deleted = true;
-    this.setState(this.state)
+    this.setState(this.state);
+    localStore.save('todoList', this.state.todoList)
   }
   render() {
     let todos = this.state.todoList.filter((item)=> !item.deleted).map((item, index) => {
